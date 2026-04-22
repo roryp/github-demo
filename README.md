@@ -26,6 +26,8 @@ when the dev server is running.
 ## Layout
 
 ```
+scripts/
+  restore-demo.ps1     # reset main + reopen issues + re-stage PR #8
 src/
   server.ts            # Express app factory + entrypoint
   routes/
@@ -40,6 +42,22 @@ public/                # static frontend (header, login, dashboard)
 tests/
   login.spec.ts        # currently flaky - see issue #2
 ```
+
+## Resetting between demo runs
+
+A git tag (`demo-working-04_22`) marks a known-good state of the repo.
+After running the demo, reset everything back to that state with:
+
+```powershell
+./scripts/restore-demo.ps1                   # reset main + reopen issues + re-stage PR #8
+./scripts/restore-demo.ps1 -DryRun           # preview the actions without making changes
+./scripts/restore-demo.ps1 -Tag demo-working-04_22
+```
+
+The script resets `main` to the tag, reopens any of issues #1-#5 that were
+closed, and re-stages the parked OpenAPI PR (#8) if it was merged or
+closed. It does not undo sessions inside the GitHub App itself - close
+those manually if they are left over.
 
 ## Demo guide
 
