@@ -16,9 +16,13 @@ agentic development demo.
 npm install
 npm run dev    # http://localhost:3000
 npm test
+npm run docs:api   # regenerate openapi.json from the zod schemas
 ```
 
 Sign in with `ada@example.com` / `password`.
+
+API docs are served at [http://localhost:3000/docs](http://localhost:3000/docs)
+when the dev server is running.
 
 ## Layout
 
