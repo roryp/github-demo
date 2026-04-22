@@ -1,7 +1,7 @@
 # github-app-demo
 
 A tiny Express + TypeScript app used as a sample codebase for demonstrating
-the GitHub App.
+Flight Deck.
 
 ## Stack
 - Node.js 20+
@@ -45,7 +45,7 @@ tests/
 ## Demo guide
 
 Five issues are pre-filed, each chosen to highlight a specific capability of
-the GitHub App. They can be walked through in order for a full end-to-end
+Flight Deck. They can be walked through in order for a full end-to-end
 story, or used individually to demonstrate a single capability.
 
 Issue #1 is the suggested end-to-end flow (issue -> session -> diff -> PR ->
@@ -138,7 +138,7 @@ Staging tip: leave the session paused on that question to use it as a
 
 ### Tips
 
-- Set the GitHub App to the light theme first so the dark-mode toggle in
+- Set Flight Deck to the light theme first so the dark-mode toggle in
   issue #1 reads clearly.
 - Close unrelated repositories in the sidebar so the Inbox focuses on this
   repo.
@@ -146,3 +146,5 @@ Staging tip: leave the session paused on that question to use it as a
   follow when presenting.
 
 See the [issues list](../../issues) for the full specs on each task.
+
+
