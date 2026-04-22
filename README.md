@@ -89,15 +89,25 @@ alive when the camera opens.
 
 ### Issue #4 — Generate OpenAPI spec from route definitions
 **Showcases:** Docs + tooling work, PR lifecycle with green checks.
-**Mode:** Autopilot.
+**Mode:** Pre-staged PR (no live session needed).
 
-1. Open issue #4 → **Start session** → **Autopilot**.
-2. The agent adds `npm run docs:api`, generates `openapi.json` from the
-   zod schemas already exported next to each route, and serves Swagger UI
-   at `/docs` in development.
-3. Let it open a pull request but **do not merge it yet** — park it in
-   the "ready to merge, all checks green" state so you can show the PR
-   surface without spending a live merge on it.
+> **Use [PR #8](../../pull/8) for this tile.** It is already open against
+> `main` with a real diff closing #4 (adds `src/openapi.ts`,
+> `scripts/generate-openapi.ts`, `openapi.json`, and Swagger UI at `/docs`),
+> and is parked in `mergeable: CLEAN` state. **Do not merge it before
+> recording** — it is your Scene 6/7 "ready to merge" prop.
+
+On camera:
+
+1. From the session panel for issue #4, click through to **PR #8**.
+2. Show the PR page: title, description, file tree, green checks.
+3. Open the **Files changed** tab briefly to show the generated spec.
+4. If the script calls for a merge beat, merge it live. Otherwise leave it
+   open for future takes.
+
+> If you need to re-stage this PR (for example after a retake that merges
+> it), recreate it from the `copilot/generate-openapi-spec` branch or start
+> a fresh Autopilot session on issue #4.
 
 ### Issue #5 — Refactor UserService to use dependency injection
 **Showcases:** Interactive collaboration, human-in-the-loop control.
@@ -117,7 +127,7 @@ alive when the camera opens.
 | #1    | Fresh, untouched                   | Hero flow                        |
 | #2    | Plan mode, paused on plan          | Plan mode tile                   |
 | #3    | Autopilot, ~60% through            | Mid-flight tile                  |
-| #4    | PR open, green checks              | Lifecycle / merge-ready tile     |
+| #4    | [PR #8](../../pull/8) open, mergeable | Lifecycle / merge-ready tile     |
 | #5    | Interactive, waiting on user       | Human-in-the-loop tile           |
 
 ### Tips
