@@ -1,7 +1,6 @@
-# github-app-demo
+# Demo
 
-A tiny Express + TypeScript app used as a sample codebase for demonstrating
-Flight Deck.
+A tiny Express + TypeScript app used as a sample codebase for demonstrating the "Flight Deck" app.
 
 ## Stack
 - Node.js 20+
