@@ -1,7 +1,7 @@
 # github-app-demo
 
-A tiny Express + TypeScript app used as the hero codebase for the GitHub App
-agentic development demo.
+A tiny Express + TypeScript app used as a sample codebase for demonstrating
+the GitHub App.
 
 ## Stack
 - Node.js 20+
@@ -16,9 +16,13 @@ agentic development demo.
 npm install
 npm run dev    # http://localhost:3000
 npm test
+npm run docs:api   # regenerate openapi.json from the zod schemas
 ```
 
 Sign in with `ada@example.com` / `password`.
+
+API docs are served at [http://localhost:3000/docs](http://localhost:3000/docs)
+when the dev server is running.
 
 ## Layout
 
@@ -29,115 +33,116 @@ src/
     auth.ts            # POST /api/auth/login
     users.ts           # GET /api/users, /api/users/:id
   services/
-    UserService.ts     # business logic (owns its deps — see issue #5)
+    UserService.ts     # business logic (owns its deps - see issue #5)
     db.ts              # in-memory user store
     emailSender.ts     # noop email sender
-  middleware/          # (rate limiting will live here — see issue #3)
+  middleware/          # (rate limiting will live here - see issue #3)
 public/                # static frontend (header, login, dashboard)
 tests/
-  login.spec.ts        # currently flaky — see issue #2
+  login.spec.ts        # currently flaky - see issue #2
 ```
 
-## Demo script — showcasing the GitHub App
+## Demo guide
 
 Five issues are pre-filed, each chosen to highlight a specific capability of
-the GitHub App. Run them in this order for the cleanest narrative, or cherry
-pick whichever beat you need.
+the GitHub App. They can be walked through in order for a full end-to-end
+story, or used individually to demonstrate a single capability.
 
-The "hero flow" used in the launch video is **Issue #1**. The other four are
-staged as background context: one mid-flight, one in Plan mode, one in
-Interactive mode, and one as an open PR ready to merge — so the Inbox looks
-alive when the camera opens.
+Issue #1 is the suggested end-to-end flow (issue -> session -> diff -> PR ->
+merge). The other four are designed to be staged in different session
+states so the Inbox shows a realistic mix of work in progress.
 
-### Issue #1 — Add dark mode toggle to the app header
-**Showcases:** Issue → session → diff → PR → merge, all in one surface.
-**Mode:** Autopilot.
+### Issue #1 - Add dark mode toggle to the app header
+**Showcases:** Issue -> session -> diff -> PR -> merge, all in one surface.
+**Suggested mode:** Autopilot.
 
-1. From the Inbox, click issue #1 and choose **Start session**.
+1. From the Inbox, open issue #1 and start a new session.
 2. Note the auto-generated branch (`add-dark-mode-toggle`) and isolated workspace.
-3. Pick **Autopilot** and let it run. It should edit `public/styles.css`,
-   add a `ThemeToggle` to each HTML page, and persist the choice in
-   `localStorage`.
+3. Run the session in **Autopilot**. The agent should edit
+   `public/styles.css`, add a `ThemeToggle` to each HTML page, and persist
+   the choice in `localStorage`.
 4. Open the **Diff** tab and scroll through the changes.
-5. In the live preview, click the toggle — the app flips from light to dark.
-   This is the money shot.
-6. Click **Create pull request**, wait for checks, then **Merge**.
-7. Back in the Inbox, issue #1 now shows as Closed.
+5. In the live preview, click the toggle to flip the app from light to
+   dark.
+6. Create the pull request, wait for checks, and merge.
+7. Issue #1 closes automatically in the Inbox.
 
-### Issue #2 — Fix flaky login test in CI
-**Showcases:** Plan mode, transparent reasoning before execution.
-**Mode:** Plan.
+### Issue #2 - Fix flaky login test in CI
+**Showcases:** Plan mode - the agent explains its approach before
+changing code.
+**Suggested mode:** Plan.
 
-1. Open issue #2 → **Start session** → **Plan**.
-2. Let the agent produce its plan. It should identify the
-   `setTimeout` race in `tests/login.spec.ts` and propose awaiting the
-   response instead.
-3. Review the plan on camera — this is the moment that proves the agent
-   shows its work before touching code.
-4. Approve the plan. The agent rewrites the test; `npm test` stays green
-   without any arbitrary waits.
+1. Open issue #2 and start a session in **Plan** mode.
+2. The agent produces a plan that should identify the `setTimeout` race in
+   `tests/login.spec.ts` and propose awaiting the response instead.
+3. Review the plan, then approve it.
+4. The agent rewrites the test; `npm test` stays green without arbitrary
+   waits.
 
-### Issue #3 — Add rate limiting middleware to the public API
-**Showcases:** Real multi-file diffs, clean backend changes.
-**Mode:** Autopilot.
+Staging tip: pause on the plan review step to use this session as a
+"Plan mode" tile when showing multiple sessions side by side.
 
-1. Open issue #3 → **Start session** → **Autopilot**.
+### Issue #3 - Add rate limiting middleware to the public API
+**Showcases:** Multi-file backend changes and test coverage.
+**Suggested mode:** Autopilot.
+
+1. Open issue #3 and start a session in **Autopilot**.
 2. The agent creates `src/middleware/rateLimit.ts`, wires it into
    `src/server.ts`, adds per-route overrides, and writes unit tests.
-3. Use this session as your "mid-flight" tile in the parallel-sessions
-   scene — pause it while files are still changing for the best visual.
 
-### Issue #4 — Generate OpenAPI spec from route definitions
-**Showcases:** Docs + tooling work, PR lifecycle with green checks.
-**Mode:** Pre-staged PR (no live session needed).
+Staging tip: pause this session mid-run to use it as a "work in progress"
+tile when showing multiple sessions side by side.
 
-> **Use [PR #8](../../pull/8) for this tile.** It is already open against
-> `main` with a real diff closing #4 (adds `src/openapi.ts`,
-> `scripts/generate-openapi.ts`, `openapi.json`, and Swagger UI at `/docs`),
-> and is parked in `mergeable: CLEAN` state. **Do not merge it before
-> recording** — it is your Scene 6/7 "ready to merge" prop.
+### Issue #4 - Generate OpenAPI spec from route definitions
+**Showcases:** PR lifecycle - reviewing and merging work that has already
+been done.
+**Suggested mode:** Pre-staged PR (no live session required).
 
-On camera:
+[PR #8](../../pull/8) is kept permanently open as the ready-to-merge prop
+for this issue. It closes #4 with a real diff (`src/openapi.ts`,
+`scripts/generate-openapi.ts`, `openapi.json`, and Swagger UI at `/docs`)
+and is parked in a mergeable, clean state.
 
-1. From the session panel for issue #4, click through to **PR #8**.
-2. Show the PR page: title, description, file tree, green checks.
-3. Open the **Files changed** tab briefly to show the generated spec.
-4. If the script calls for a merge beat, merge it live. Otherwise leave it
-   open for future takes.
+1. From issue #4, navigate to [PR #8](../../pull/8).
+2. Walk through the PR page: title, description, checks, and the
+   **Files changed** tab.
+3. Merge the PR if the demo calls for it, otherwise leave it open.
 
-> If you need to re-stage this PR (for example after a retake that merges
-> it), recreate it from the `copilot/generate-openapi-spec` branch or start
-> a fresh Autopilot session on issue #4.
+If the PR has been merged and needs to be re-staged, recreate it from the
+`copilot/generate-openapi-spec` branch or run a fresh Autopilot session on
+issue #4.
 
-### Issue #5 — Refactor UserService to use dependency injection
-**Showcases:** Interactive collaboration, human-in-the-loop control.
-**Mode:** Interactive.
+### Issue #5 - Refactor UserService to use dependency injection
+**Showcases:** Interactive collaboration - the agent pauses to ask a
+question before continuing.
+**Suggested mode:** Interactive.
 
-1. Open issue #5 → **Start session** → **Interactive**.
-2. Send one message: "Start with the constructor signature."
-3. Let the agent reply with a clarifying question (for example, whether
-   to introduce an interface or keep concrete types).
-4. Leave the session paused on that question — it's your "waiting on
-   you" tile in the parallel-sessions scene.
+1. Open issue #5 and start a session in **Interactive** mode.
+2. Send one short instruction, for example: "Start with the constructor
+   signature."
+3. The agent replies with a clarifying question (such as whether to
+   introduce an interface or keep concrete types).
 
-### Staging summary for the Inbox shot
+Staging tip: leave the session paused on that question to use it as a
+"waiting on user" tile when showing multiple sessions side by side.
 
-| Issue | State when you hit record          | Purpose                          |
-|-------|------------------------------------|----------------------------------|
-| #1    | Fresh, untouched                   | Hero flow                        |
-| #2    | Plan mode, paused on plan          | Plan mode tile                   |
-| #3    | Autopilot, ~60% through            | Mid-flight tile                  |
-| #4    | [PR #8](../../pull/8) open, mergeable | Lifecycle / merge-ready tile     |
-| #5    | Interactive, waiting on user       | Human-in-the-loop tile           |
+### Suggested staging for a side-by-side Inbox view
+
+| Issue | Suggested state                        | Purpose                  |
+|-------|-----------------------------------------|--------------------------|
+| #1    | Fresh, untouched                        | End-to-end flow          |
+| #2    | Plan mode, paused on plan review        | Plan mode tile           |
+| #3    | Autopilot, partway through              | Work-in-progress tile    |
+| #4    | [PR #8](../../pull/8) open, mergeable   | Merge-ready tile         |
+| #5    | Interactive, paused on agent question   | Human-in-the-loop tile   |
 
 ### Tips
 
-- Set the GitHub App's own theme to light before recording so the Scene 5
-  light-to-dark flip reads clearly.
-- Close every other repo in the sidebar. Only `github-app-demo` should be
-  visible.
-- Pre-record the agent-working scene at real speed and speed-ramp it in
-  post. Do not try to capture 30 seconds of live tool calls on the first
-  take.
+- Set the GitHub App to the light theme first so the dark-mode toggle in
+  issue #1 reads clearly.
+- Close unrelated repositories in the sidebar so the Inbox focuses on this
+  repo.
+- Sessions can be run at any pace; slower runs make each step easier to
+  follow when presenting.
 
 See the [issues list](../../issues) for the full specs on each task.
