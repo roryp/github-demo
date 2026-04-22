@@ -1,0 +1,70 @@
+:root {
+  --bg: #ffffff;
+  --fg: #1f2328;
+  --muted: #656d76;
+  --surface: #f6f8fa;
+  --border: #d0d7de;
+  --accent: #0969da;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.app-header .brand { font-weight: 600; }
+.app-header nav a {
+  margin-left: 16px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.stack { display: flex; flex-direction: column; gap: 12px; padding: 0; list-style: none; }
+
+form.stack label { display: flex; flex-direction: column; gap: 4px; }
+
+input, button {
+  font: inherit;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+button {
+  background: var(--accent);
+  color: white;
+  border-color: transparent;
+  cursor: pointer;
+}
+
+.error { color: #cf222e; }
+
+code {
+  background: var(--surface);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
