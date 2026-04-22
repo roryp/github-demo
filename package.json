@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Small Express + TS app used as the hero codebase for the GitHub App demo.",
+  "description": "Small Express + TS app used as the sample codebase for the Flight Deck demo.",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",
@@ -28,3 +28,5 @@
     "vitest": "^1.6.0"
   }
 }
+
+
