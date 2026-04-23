@@ -1,3 +1,13 @@
+const themeButtons = document.querySelectorAll('[data-theme-toggle]');
+themeButtons.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (_) { /* ignore */ }
+  });
+});
+
 const form = document.getElementById('login-form');
 if (form) {
   form.addEventListener('submit', async (e) => {

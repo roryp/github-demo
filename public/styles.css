@@ -7,6 +7,15 @@
   --accent: #0969da;
 }
 
+:root[data-theme='dark'] {
+  --bg: #0d1117;
+  --fg: #e6edf3;
+  --muted: #8b949e;
+  --surface: #161b22;
+  --border: #30363d;
+  --accent: #2f81f7;
+}
+
 * { box-sizing: border-box; }
 
 html, body {
@@ -29,11 +38,36 @@ html, body {
 }
 
 .app-header .brand { font-weight: 600; }
+.app-header nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 .app-header nav a {
-  margin-left: 16px;
   color: var(--accent);
   text-decoration: none;
 }
+
+.theme-toggle {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--fg);
+  width: 36px;
+  height: 32px;
+  border-radius: 6px;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1;
+}
+.theme-toggle:hover { background: var(--surface); }
+.theme-toggle .icon-dark { display: none; }
+:root[data-theme='dark'] .theme-toggle .icon-light { display: none; }
+:root[data-theme='dark'] .theme-toggle .icon-dark { display: inline; }
 
 .container {
   max-width: 720px;

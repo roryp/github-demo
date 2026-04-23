@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dashboard — Demo App</title>
+    <script src="/theme-init.js"></script>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
@@ -12,6 +13,10 @@
       <nav>
         <a href="/">Home</a>
         <a href="/login.html">Sign out</a>
+        <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+          <span class="icon-light" aria-hidden="true">🌙</span>
+          <span class="icon-dark" aria-hidden="true">☀️</span>
+        </button>
       </nav>
     </header>
 
