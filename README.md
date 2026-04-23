@@ -59,6 +59,67 @@ closed, and re-stages the parked OpenAPI PR (#8) if it was merged or
 closed. It does not undo sessions inside the GitHub App itself - close
 those manually if they are left over.
 
+## Parallel agents demo (the hero flow)
+
+The highest-impact way to demo Flight Deck: four agents working on four
+separate issues simultaneously, each in its own worktree and branch, with
+zero coordination between them. PRs land cleanly because the issues are
+scoped to touch disjoint files.
+
+### Before you start
+
+Reset to a known-good state:
+
+```powershell
+./scripts/restore-demo.ps1
+```
+
+This reopens issues #1-#5, resets `main` to the `demo-working-04_22` tag,
+and re-parks PR #8.
+
+### Running the demo
+
+1. Open the **Inbox** in the left rail. Issues #1, #2, #3, and #5 should
+   be visible. (Skip #4 - that one is covered by parked PR #8.)
+2. For each of the four issues, in quick succession:
+   - Click the issue.
+   - Click **Delegate to agent** (or **Start session**).
+   - Return to the Inbox immediately and do the next one. Do not wait.
+3. Within about ten seconds, four sessions are running in parallel in the
+   sidebar, each on its own worktree and branch. This is the hero shot -
+   let the audience see all four agents working at once.
+4. As each session finishes, its PR tile appears. Click through to review
+   diffs side-by-side.
+5. Merge the PRs from the PR view, or from the terminal:
+
+   ```powershell
+   $env:GH_PAGER=""
+   gh pr merge <number> --repo roryp/github-app-demo --squash --delete-branch
+   ```
+
+   PR numbers differ on each run - grab them from the sidebar.
+6. Show PR #8 still sitting there for the "pre-baked, ready-to-merge"
+   moment (see issue #4 below).
+
+### Why this works without conflicts
+
+| Issue | Files touched                                                   |
+|-------|-----------------------------------------------------------------|
+| #1    | `public/*.html`, `public/styles.css`, `public/app.js`           |
+| #2    | `tests/login.spec.ts`                                           |
+| #3    | `src/middleware/rateLimit.ts`, `src/server.ts`, new test file   |
+| #5    | `src/services/*`, `src/routes/*`, new test file                 |
+
+Zero overlap. Merge order does not matter.
+
+### After the demo
+
+```powershell
+./scripts/restore-demo.ps1
+```
+
+Resets everything for the next take.
+
 ## Demo guide
 
 Five issues are pre-filed, each chosen to highlight a specific capability of
