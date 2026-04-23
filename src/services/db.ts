@@ -1,12 +1,19 @@
 import type { User } from './UserService.js';
 
+export interface UserDb {
+  list(): Promise<User[]>;
+  findById(id: string): Promise<User | null>;
+  findByEmail(email: string): Promise<User | null>;
+  create(input: Omit<User, 'id'>): Promise<User>;
+}
+
 const seed: User[] = [
   { id: '1', email: 'ada@example.com', name: 'Ada Lovelace', passwordHash: 'hashed:password' },
   { id: '2', email: 'grace@example.com', name: 'Grace Hopper', passwordHash: 'hashed:password' },
   { id: '3', email: 'alan@example.com', name: 'Alan Turing', passwordHash: 'hashed:password' },
 ];
 
-export class InMemoryUserDb {
+export class InMemoryUserDb implements UserDb {
   private users: User[] = [...seed];
 
   async list(): Promise<User[]> {

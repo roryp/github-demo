@@ -1,5 +1,5 @@
-import { InMemoryUserDb } from './db.js';
-import { EmailSender } from './emailSender.js';
+import { InMemoryUserDb, type UserDb } from './db.js';
+import { EmailSender, type Emailer } from './emailSender.js';
 
 export interface User {
   id: string;
@@ -9,13 +9,11 @@ export interface User {
 }
 
 /**
- * UserService currently constructs its own collaborators internally.
- * This makes it hard to test and impossible to swap implementations —
- * see issue #5 for the planned refactor to constructor injection.
+ * UserService receives its collaborators via constructor injection so
+ * call sites (and tests) can swap in fakes without monkey-patching.
  */
 export class UserService {
-  private db = new InMemoryUserDb();
-  private email = new EmailSender();
+  constructor(private readonly db: UserDb, private readonly email: Emailer) {}
 
   async authenticate(email: string, password: string): Promise<User | null> {
     const user = await this.db.findByEmail(email);
@@ -37,4 +35,17 @@ export class UserService {
     await this.email.send(email, 'Welcome', `Hi ${name}, your account is ready.`);
     return user;
   }
+}
+
+let defaultInstance: UserService | null = null;
+
+/**
+ * Shared default instance for route modules. Tests should construct
+ * their own UserService with fake collaborators rather than using this.
+ */
+export function getDefaultUserService(): UserService {
+  if (!defaultInstance) {
+    defaultInstance = new UserService(new InMemoryUserDb(), new EmailSender());
+  }
+  return defaultInstance;
 }

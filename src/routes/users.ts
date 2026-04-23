@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { UserService } from '../services/UserService.js';
+import { getDefaultUserService } from '../services/UserService.js';
 
 export const userSchema = z.object({
   id: z.string(),
@@ -12,7 +12,7 @@ export const userListSchema = z.array(userSchema);
 
 export const usersRouter = Router();
 
-const users = new UserService();
+const users = getDefaultUserService();
 
 usersRouter.get('/', async (_req, res) => {
   const all = await users.list();

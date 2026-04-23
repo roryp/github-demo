@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { UserService } from '../services/UserService.js';
+import { getDefaultUserService } from '../services/UserService.js';
 
 export const loginSchema = z.object({
   email: z.string().email(),
@@ -18,7 +18,7 @@ export const loginResponseSchema = z.object({
 
 export const authRouter = Router();
 
-const users = new UserService();
+const users = getDefaultUserService();
 
 authRouter.post('/login', async (req, res) => {
   const parsed = loginSchema.safeParse(req.body);
