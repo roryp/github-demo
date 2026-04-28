@@ -1,3 +1,26 @@
+// --- Theme toggle ---
+(function initThemeToggle() {
+  const toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
+
+  function currentTheme() {
+    return document.documentElement.getAttribute('data-theme') || 'light';
+  }
+
+  function applyIcon() {
+    toggle.textContent = currentTheme() === 'dark' ? '☀️' : '🌙';
+  }
+
+  applyIcon();
+
+  toggle.addEventListener('click', () => {
+    const next = currentTheme() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    applyIcon();
+  });
+})();
+
 const form = document.getElementById('login-form');
 if (form) {
   form.addEventListener('submit', async (e) => {
