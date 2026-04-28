@@ -1,4 +1,4 @@
-import type { User } from './UserService.js';
+import type { User, UserDb } from './UserService.js';
 
 const seed: User[] = [
   { id: '1', email: 'ada@example.com', name: 'Ada Lovelace', passwordHash: 'hashed:password' },
@@ -6,7 +6,7 @@ const seed: User[] = [
   { id: '3', email: 'alan@example.com', name: 'Alan Turing', passwordHash: 'hashed:password' },
 ];
 
-export class InMemoryUserDb {
+export class InMemoryUserDb implements UserDb {
   private users: User[] = [...seed];
 
   async list(): Promise<User[]> {

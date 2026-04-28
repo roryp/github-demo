@@ -1,6 +1,3 @@
-import { InMemoryUserDb } from './db.js';
-import { EmailSender } from './emailSender.js';
-
 export interface User {
   id: string;
   email: string;
@@ -8,14 +5,22 @@ export interface User {
   passwordHash: string;
 }
 
-/**
- * UserService currently constructs its own collaborators internally.
- * This makes it hard to test and impossible to swap implementations —
- * see issue #5 for the planned refactor to constructor injection.
- */
+export interface UserDb {
+  list(): Promise<User[]>;
+  findById(id: string): Promise<User | null>;
+  findByEmail(email: string): Promise<User | null>;
+  create(input: Omit<User, 'id'>): Promise<User>;
+}
+
+export interface EmailService {
+  send(to: string, subject: string, body: string): Promise<void>;
+}
+
 export class UserService {
-  private db = new InMemoryUserDb();
-  private email = new EmailSender();
+  constructor(
+    private db: UserDb,
+    private email: EmailService,
+  ) {}
 
   async authenticate(email: string, password: string): Promise<User | null> {
     const user = await this.db.findByEmail(email);
