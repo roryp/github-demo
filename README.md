@@ -23,6 +23,36 @@ Sign in with `ada@example.com` / `password`.
 API docs are served at [http://localhost:3000/docs](http://localhost:3000/docs)
 when the dev server is running.
 
+## Rate Limiting
+
+All `/api/*` routes are rate-limited to **100 requests per minute per IP** by default.
+
+**Response headers** on every API response:
+- `X-RateLimit-Limit` – the maximum number of requests in the window
+- `X-RateLimit-Remaining` – requests remaining in the current window
+- `X-RateLimit-Reset` – Unix timestamp (seconds) when the window resets
+
+When the limit is exceeded, the server returns **429 Too Many Requests** with a `Retry-After` header (seconds until the window resets).
+
+**Per-route override:** Mount a separate `createRateLimiter()` instance with custom options on a specific route *before* the global limiter:
+
+```ts
+import { createRateLimiter } from './middleware/rateLimit.js';
+
+// Stricter limit for login: 10 requests/min
+app.use('/api/auth', createRateLimiter({ maxRequests: 10, windowMs: 60_000 }));
+
+// Global default: 100 requests/min
+app.use('/api', createRateLimiter());
+```
+
+**Configuration options** (passed to `createRateLimiter()`):
+
+| Option        | Default  | Description                          |
+|---------------|----------|--------------------------------------|
+| `windowMs`    | `60000`  | Time window in milliseconds          |
+| `maxRequests` | `100`    | Max requests per IP within the window|
+
 ## Layout
 
 ```
