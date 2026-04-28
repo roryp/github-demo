@@ -6,6 +6,7 @@ import swaggerUi from 'swagger-ui-express';
 import { authRouter } from './routes/auth.js';
 import { usersRouter } from './routes/users.js';
 import { generateSpec } from './openapi.js';
+import { createRateLimiter } from './middleware/rateLimit.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -13,6 +14,10 @@ export function createApp() {
   const app = express();
   app.use(cors());
   app.use(express.json());
+
+  // Rate limiting: 100 requests/min per IP on all /api/* routes
+  const apiLimiter = createRateLimiter();
+  app.use('/api', apiLimiter);
 
   app.use('/api/auth', authRouter);
   app.use('/api/users', usersRouter);
