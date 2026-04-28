@@ -2,8 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import swaggerUi from 'swagger-ui-express';
 import { authRouter } from './routes/auth.js';
 import { usersRouter } from './routes/users.js';
+import { generateSpec } from './openapi.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -18,6 +20,10 @@ export function createApp() {
   app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok' });
   });
+
+  // Swagger UI served at /docs
+  const spec = generateSpec();
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(spec));
 
   const publicDir = path.resolve(__dirname, '../public');
   app.use(express.static(publicDir));
