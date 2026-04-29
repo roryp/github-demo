@@ -1,11 +1,16 @@
 import express from 'express';
 import cors from 'cors';
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { authRouter } from './routes/auth.js';
 import { usersRouter } from './routes/users.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const pkg = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf-8'),
+) as { version: string };
 
 export function createApp() {
   const app = express();
@@ -17,6 +22,10 @@ export function createApp() {
 
   app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok' });
+  });
+
+  app.get('/api/version', (_req, res) => {
+    res.json({ version: pkg.version });
   });
 
   const publicDir = path.resolve(__dirname, '../public');
